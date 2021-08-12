@@ -1,0 +1,60 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/font-awesome.min.css') }}">
+    <script defer src="{{ url_for('static', filename='/scripts/TimelineMax.min.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='/scripts/TweenMax.min.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='/scripts/recapp.js') }}"></script>
+
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='/media/icon.png') }}"/>
+
+    {% block head %}
+    {% endblock %}
+
+    {% if title %}
+        <title>{{ title }}</title>
+    {% else %}
+        <title>FKT Generator</title>
+    {%  endif %}
+
+</head>
+<body class="light">
+    <nav class="navbar">
+        <input type="checkbox" id="check">
+        <label for="check" class="menu">
+            <i class="fa fa-bars"></i>
+        </label>
+
+        {% if current_user.is_authenticated %}
+            <h2 class="logo"><a href="{{url_for('index')}}">FKT Generator</a></h2>
+
+            <ul class="navbar-nav" id="tropdown">
+                <li class="nav-item"><a href="{{url_for('all_forms')}}">view all</a></li>
+                <li class="nav-item"><a href="{{url_for('add_head', ticket_type='receipt')}}">new receipt</a></li>
+                <li class="nav-item"><a href="{{url_for('add_head', ticket_type='quote')}}">new quotation</a></li>
+                <li class="nav-item"><a href="{{url_for('logout')}}">logout</a></li>
+                <li class="nav-item">
+                    <a href="#" class="theme" id="light">light</a>
+                </li>
+            </ul>
+        {% else %}
+            <h2 class="logo"><a href="#">FKT Generator</a></h2>
+
+            <ul class="navbar-nav" id="tropdown">
+                <li class="nav-item">
+                    <a href="#" class="theme" id="light">light</a>
+                </li>
+            </ul>
+        {% endif %}
+
+
+    </nav>
+
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

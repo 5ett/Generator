@@ -1,0 +1,125 @@
+{% extends 'origin.html' %}
+
+
+{% block content %}
+    <main role="main">
+        <div class="container">
+            <div class="form-type">
+                <div class="form">
+                    <form class="">
+                        <div class="search">
+
+                            {{ form.search_bar(class='top-off', id="item-name", placeholder='search') }}
+
+                            {{ form.search_action(class='btn-round') }}
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+           {% if payload %}
+                {% for element in payload %}}
+                    {% if element.form_type == 'PRO' %}
+                       <div class="plaque r-margin">
+                           <h1>Quotations</h1>
+                           <div>
+                                <a href="{{ url_for('form_viewer', ticket_id=element.id) }}">
+                                    <div class="plaque-sm">
+                                            <div class="form-id">
+                                                <h2>{{ element.pseudo_id }}</h2>
+                                            </div>
+                                            <div class="details">
+                                                <p>{{ element.belongs_to }}</p>
+                                                <p><em>{{element.no_items}} items</em></p>
+                                            </div>
+                                            <div class="status {{ element.status }}">
+                                                <small>{{ element.status }}</small>
+                                            </div>
+                                    </div>
+                                </a>
+                            </div>
+                       </div>
+                    {% else %}
+                       <div class="plaque r-margin">
+                           <h1>Receipts</h1>
+                           <div>
+                                <a href="{{ url_for('form_viewer', ticket_id=element.id) }}">
+                                    <div class="plaque-sm">
+                                            <div class="form-id">
+                                                <h2>{{ element.pseudo_id }}</h2>
+                                            </div>
+                                            <div class="details">
+                                                <p>{{ element.belongs_to }}</p>
+                                                <p><em>{{element.no_items}} items</em></p>
+                                            </div>
+                                            <div class="status {{ element.status }}">
+                                                <small>{{ element.status }}</small>
+                                            </div>
+                                    </div>
+                                </a>
+                            </div>
+                       </div>
+                    {% endif %}
+                {% endfor %}
+           {% else %}
+                 <div class="plaque r-margin">
+                <h1>Quotations</h1>
+                {% if viewer %}
+                    {% for element in viewer %}
+                        {% if element.form_type == 'PRO' %}
+
+                            <div>
+                                <a href="{{ url_for('form_viewer', ticket_id=element.id) }}">
+                                    <div class="plaque-sm">
+                                            <div class="form-id">
+                                                <h2>{{ element.pseudo_id }}</h2>
+                                            </div>
+                                            <div class="details">
+                                                <p>{{ element.belongs_to }}</p>
+                                                <p><em>{{element.no_items}} items</em></p>
+                                            </div>
+                                            <div class="status {{ element.status }}">
+                                                <small>{{ element.status }}</small>
+                                            </div>
+                                    </div>
+                                </a>
+                            </div>
+                        {% else %}
+                            <h3 style="text-align: center;">no quotations added to database yet</h3>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="plaque r-margin">
+                <h1>Receipts</h1>
+                {% if viewer %}
+                    {% for element in viewer %}
+                        {% if element.form_type == 'REC' %}
+                            <div>
+                                <a href="{{ url_for('form_viewer', ticket_id=element.id) }}">
+                                    <div class="plaque-sm">
+                                            <div class="form-id">
+                                                <h2>{{ element.pseudo_id }}</h2>
+                                            </div>
+                                            <div class="details">
+                                                <p>{{ element.belongs_to }}</p>
+                                                <p><em>{{element.no_items}} items</em></p>
+                                            </div>
+                                            <div class="status {{ element.status }}">
+                                                <small>{{ element.status }}</small>
+                                            </div>
+                                    </div>
+                                </a>
+                            </div>
+                        {% else %}
+                            <h3 style="text-align: center;">no quotations added to database yet</h3>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+           {% endif %}
+        </div>
+    </main>
+{% endblock %}

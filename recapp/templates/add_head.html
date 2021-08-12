@@ -1,0 +1,41 @@
+{% extends 'origin.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+    <main role=main>
+        <div class="container-form">
+            <form action="" method="POST" class="owner-head">
+                {{ form.hidden_tag() }}
+                 <div class="form-head">
+                    <div class="cancel">
+                        <li class="elipses">
+                            <a href="#" class="caret"></a>
+                            <ul class="dropdown">
+                                <li class="dropdown-item">
+                                    <a href="{{ url_for('index') }}">cancel</a>
+                                </li>
+                            </ul>
+                        </li>
+                     </div>
+
+                    <h2>Enter rcepient of {{ ticket_type }}</h2>
+                 </div>
+                <div class="fieldset">
+                    <div class="short-fields">
+                        <div>
+                            {{ form.name(class='top-off', id="head", placeholder='Make for...') }}
+                        </div>
+                        <p class="text-muted">
+                            <small>Enter who this {{ticket_type}} is for. Date and ID will automatically be added!</small>
+                        </p>
+                        <div>
+                            {{ form.add(class='btn btn-prime') }}
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+{% endblock %}

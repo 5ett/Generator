@@ -1,0 +1,115 @@
+{% extends 'origin.html' %}
+
+{% block head %}
+    <script defer src="{{ url_for('static', filename='/scripts/home.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='/scripts/supreme.js') }}"></script>
+{% endblock %}
+
+
+{% block content %}
+    <main role="main">
+        {% if current_user.is_authenticated %}
+            <div class="container">
+
+                <div class="greetings">
+                    <h1>Good {{ time }},  {{ current_user.name }}.</h1>
+                </div>
+
+                <div class="plaque full-radius">
+                    <h1>New form</h1>
+                    <div class="plaque-items">
+
+                        <a href="{{url_for('add_head', ticket_type='quote')}}">
+                            <div class="plaque-lg plg-1" id="proforma">
+                                <h2>Proforma</h2>
+                                <p>Generate new quotation for client.</p>
+                            </div>
+                        </a>
+
+                        <a href="{{url_for('add_head', ticket_type='receipt')}}">
+                            <div class="plaque-lg plg-2" id="receipt">
+                                <h2>Receipt</h2>
+                                <p>Generate receipt for sold items.</p>
+                            </div>
+                        </a>
+
+                        <a href="{{url_for('all_forms')}}">
+                            <div class="plaque-lg plg-3" id="viewer">
+                                <h2>View All</h2>
+                                <p>See all entered forms.</p>
+                            </div>
+                        </a>
+
+                    </div>
+
+                    </div>
+
+                    <div class="plaque half-radius">
+                        <h1>Recents</h1>
+
+                        <div class="plaque-items psm">
+
+                            {% if recent_forms %}
+                                {% for element in recent_forms %}
+                                    <div>
+                                        <a href="{{ url_for('form_viewer', ticket_id=element.id) }}">
+                                            <div class="plaque-sm">
+                                                    <div class="form-id">
+                                                        <h2>{{ element.pseudo_id }}</h2>
+                                                    </div>
+                                                    <div class="details">
+                                                        <p>{{ element.belongs_to }}</p>
+                                                        <p><em>{{element.no_items}} items</em></p>
+                                                    </div>
+                                                    <div class="status {{ element.status }}">
+                                                        <small>{{ element.status }}</small>
+                                                    </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <h1>No Recent Receipts or Quotations</h1>
+                            {% endif %}
+
+
+                            </div>
+                        </div>
+                    </div>
+
+            {% else %}
+                <div class="container-form">
+                    <form action="" method="POST" class="login-form">
+
+                        {{ form.hidden_tag() }}
+                        <h2 class="form-head">Log in</h2>
+                       <div class="fieldset">
+                            <div class="fields">
+                                <div class="">
+                                    {% if form.username.errors %}
+                                        {{form.username(class='top-off filler is-invalid', placeholder='Username')}}
+                                        {% for error in form.username.errors %}
+                                            <div class="invalid-feedback"><span>{{error}}</span></div>
+                                        {% endfor %}
+                                    {% else %}
+                                        {{ form.username(class='top-off filler', id="head", placeholder='Username') }}
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    {{ form.password(class='top-off filler', id="head", placeholder='Password') }}
+                                </div>
+                            </div>
+
+                            <div class="buttons">
+                                {{ form.login(class='btn btn-prime') }}
+                            </div>
+                       </div>
+
+
+                    </form>
+                </div>
+    </main>
+
+            {% endif %}
+
+{% endblock %}

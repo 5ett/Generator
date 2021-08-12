@@ -1,0 +1,157 @@
+{% extends 'origin.html' %}
+
+    {% block head %}
+        <script defer src="../static/scripts/receipt.js"></script>
+    {% endblock %}
+
+
+    {% block content %}
+    <main role="main">
+        <div class="container">
+            <div class="form-type">
+                <h3>Receipt</h3>
+            </div>
+
+            <div class="plaque half-radius for-form">
+                <div>
+                    <li id="form-dropdown">
+                        <a href="#" class="caret" id="caret">
+
+                        </a>
+                        <ul class="dropdown" id=trop-menu>
+                            <li class="dropdown-item">
+                                <a href="{{url_for('index')}}">cancel</a>
+                            </li>
+
+                            <li class="dropdown-item">
+                                <a href="{{url_for('delete_form', ticket_pseudo_id=resolved_id.pseudo_id)}}">delete</a>
+                            </li>
+                        </ul>
+                    </li>
+                </div>
+
+                <div class="form">
+                    <form action="" class="" method="POST">
+                        {{ form.hidden_tag() }}
+                        <div class="generator">
+                            {{ form.item_name(class='top-off', id="item-name", placeholder='item name') }}
+
+
+
+                            {{ form.item_quantity(class='top-off', id="item-quantity", placeholder='Quantity') }}
+
+
+
+                            {{ form.unit_price(class='top-off', id="unit_price", placeholder='Unit Price') }}
+
+
+                            {{ form.add(class='btn-round') }}
+                        </div>
+                    </form>
+
+                    <div class="meta">
+                        <div class="form-owner">
+                            <p>{{ resolved_id.belongs_to }}</p>
+                        </div>
+
+                        <div class="meta-meta">
+                            <div class="form-id">
+                                <h2>{{ resolved_id.pseudo_id }}</h2>
+                            </div>
+                            <div class="status neutral">
+                                <small>{{ resolved_id.status }}</small>
+                            </div>
+
+                            <div class="date">
+                                <small>{{ resolved_id.issuance_date.date() }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table">
+                    <div class="heads">
+                        <div class="row">
+                            <div class="column" id="num-col">
+                                <h2>#</h2>
+                            </div>
+                            <div class="column">
+                                <h2>Item</h2>
+                            </div>
+                            <div class="column">
+                                <h2>Quantity</h2>
+                            </div>
+                            <div class="column">
+                                <h2>Unit Price</h2>
+                            </div>
+                            <div class="column">
+                                <h2>Price</h2>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="entries">
+
+                        {% if payload %}
+                            {% for item in payload %}
+                                <div class="row">
+                                    <div class="column" id="num-col">
+                                        <p>{{ payload.index(item) + 1 }}</p>
+                                    </div>
+                                    <div class="column">
+                                        <p>{{item.item_name}}</p>
+                                    </div>
+                                    <div class="column">
+                                        <p>{{item.item_quantity}}</p>
+                                    </div>
+                                    <div class="column">
+                                        <p>{{item.unit_price}}</p>
+                                    </div>
+                                    <div class="column">
+                                        <p>{{item.total_price}}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <div class="row vat-row">
+                                <div class="column" id="num-col"></div>
+                                <div class="column"></div>
+                                <div class="column"></div>
+                                <div class="column" id="vat">
+                                    <p>Vat 4%</p>
+                                </div>
+                                <div class="column" id="vat-amnt">
+                                    <p>{{resolved_id.vat}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row total-row">
+                                <div class="column" id="num-col"></div>
+                                <div class="column pseudo" id="num-col"></div>
+                                <div class="column pseudo" id="num-col"></div>
+                                <div class="column rev-pseudo"></div>
+                                <div class="column"></div>
+                                <div class="column" id="total-tag">
+                                    <p>Total</p>
+                                </div>
+                                <div class="column" id="total-amnt">
+                                    <p>{{ resolved_id.total_sum }}</p>
+                                </div>
+                            </div>
+                            <div class="btn-group">
+                                <button type="submit" href="{{ url_for('draftify', ticket_pseudo_id=resolved_id.pseudo_id) }}" class="btn btn-sec">Save draft</button>
+                                <button type="submit" class="btn btn-prime">Continue</button>
+                            </div>
+                        {% else %}
+                            <h2 style="text-align: center;">Added items will show up here</h2>
+                        {% endif %}
+
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+{% endblock %}
