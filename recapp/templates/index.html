@@ -50,7 +50,7 @@
                         <div class="plaque-items psm">
 
                             {% if recent_forms %}
-                                {% for element in recent_forms %}
+                                {% for element in recent_forms[:5] %}
                                     <div>
                                         <a href="{{ url_for('form_viewer', ticket_id=element.id) }}">
                                             <div class="plaque-sm">
@@ -87,12 +87,12 @@
                             <div class="fields">
                                 <div class="">
                                     {% if form.username.errors %}
-                                        {{form.username(class='top-off filler is-invalid', placeholder='Username')}}
+                                        {{form.username(class='top-off filler is-invalid', placeholder='Name or Username')}}
                                         {% for error in form.username.errors %}
                                             <div class="invalid-feedback"><span>{{error}}</span></div>
                                         {% endfor %}
                                     {% else %}
-                                        {{ form.username(class='top-off filler', id="head", placeholder='Username') }}
+                                        {{ form.username(class='top-off filler', id="head", placeholder='Name or Username') }}
                                     {% endif %}
                                 </div>
                                 <div>

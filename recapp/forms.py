@@ -10,7 +10,11 @@ class Login(FlaskForm):
     login = SubmitField('login')
 
     def validate_username(self, username):
-        user_validated = User.query.filter_by(username=username.data).first()
+        try:
+            user_validated = User.query.filter_by(
+                username=username.data).first()
+        except:
+            user_validated = User.query.filter_by(name=username.data).first()
         if not user_validated:
             raise ValidationError("This user doesn't exist")
 

@@ -1,7 +1,5 @@
-import os
 import string
 from recapp.tryts import generate_id, greeting_tag
-from dotenv import load_dotenv
 from recapp import app, db, crypt
 from recapp.models import User, Ticket, Storage
 from recapp.forms import Login, Generator, Search, Head
@@ -14,10 +12,17 @@ def index():
     time_now = greeting_tag()
     form = Login()
     if form.validate_on_submit():
-        user_valid = User.query.filter_by(username=form.username.data).first()
-        pass_auth = crypt.check_password_hash(
-            user_valid.password, form.password.data)
-        if user_valid and pass_auth:
+        try:
+            user_valid = User.query.filter_by(
+                username=form.username.data).first()
+        except:
+            user_valid = User.query.filter_by(name=form.username.data).first()
+        else:
+            flash('Wrong credentials', 'danger')
+
+        # pass_auth = crypt.check_password_hash(
+        #     user_valid.password, form.password.data)
+        if user_valid and crypt.check_password_hash(user_valid.password, form.password.data):
             login_user(user_valid)
         else:
             flash('Wrong credentials', 'danger')
@@ -42,7 +47,9 @@ def add_head(ticket_type):
         db.session.add(create_ticket)
         db.session.commit()
 
-        return redirect(url_for(f'make_{ticket_type}', ticket_pseudo_id=generated_pseudo_id))
+        ticket = Ticket.query.filter_by(pseudo_id=generated_pseudo_id).first()
+        # return redirect(url_for(f'make_{ticket_type}', ticket_pseudo_id=generated_pseudo_id))
+        return redirect(url_for('form_viewer', ticket_id=ticket.id))
 
     return render_template('add_head.html', form=form, ticket_type=ticket_type, title='Add Head')
 
@@ -156,6 +163,7 @@ def all_forms():
 
 
 @app.route("/form_viewer/<int:ticket_id>", methods=['GET', 'POST'])
+# @app.route("/form_viewer/<string:ticket_pseudo_id>", methods=['GET', 'POST'])
 def form_viewer(ticket_id):
     call_for_view = Ticket.query.filter_by(id=ticket_id).first()
 
@@ -167,15 +175,17 @@ def form_viewer(ticket_id):
         ref_total_price = ref_unit_price * ref_item_qtty
         ref_total_price = round(ref_total_price, 2)
 
-        new_receipt_item = Storage(item_name=entered_item_name, item_quantity=ref_item_qtty,
-                                   unit_price=ref_unit_price, total_price=ref_total_price, ticket_link=call_for_view.id)
+        new_form_item = Storage(item_name=entered_item_name, item_quantity=ref_item_qtty,
+                                unit_price=ref_unit_price, total_price=ref_total_price, ticket_link=call_for_view.id)
 
-        call_for_view.subtotal = round((call_for_view.subtotal + ref_total_price),2)
+        call_for_view.subtotal = round(
+            (call_for_view.subtotal + ref_total_price), 2)
         call_for_view.vat = round((0.04 * call_for_view.subtotal), 2)
-        call_for_view.total_sum = round((call_for_view.subtotal + call_for_view.vat), 2)
+        call_for_view.total_sum = round(
+            (call_for_view.subtotal + call_for_view.vat), 2)
         call_for_view.no_items += 1
 
-        db.session.add(new_receipt_item)
+        db.session.add(new_form_item)
         db.session.commit()
 
     resources = Storage.query.filter_by(
