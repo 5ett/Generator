@@ -54,77 +54,6 @@ def add_head(ticket_type):
     return render_template('add_head.html', form=form, ticket_type=ticket_type, title='Add Head')
 
 
-@app.route("/make_quote/<string:ticket_pseudo_id>", methods=['GET', 'POST'])
-@app.route("/make_quote", methods=['GET', 'POST'])
-@login_required
-def make_quote(ticket_pseudo_id):
-
-    if not current_user.is_authenticated:
-        flash('you need to login before accessing this page', 'danger')
-        return redirect(url_for('index'))
-
-    ticket_now = Ticket.query.filter_by(pseudo_id=ticket_pseudo_id).first()
-
-    form = Generator()
-    if form.validate_on_submit():
-        entered_item_name = string.capwords(form.item_name.data)
-        ref_item_qtty = form.item_quantity.data
-        ref_unit_price = form.unit_price.data
-        ref_total_price = ref_unit_price * ref_item_qtty
-        ref_total_price = round(ref_total_price, 2)
-
-        new_quote_item = Storage(item_name=entered_item_name, item_quantity=ref_item_qtty,
-                                 unit_price=ref_unit_price, total_price=ref_total_price, ticket_link=ticket_now.id)
-
-        ticket_now.subtotal = round((ticket_now.subtotal + ref_total_price), 2)
-        ticket_now.vat = round((0.04 * ticket_now.subtotal), 2)
-        ticket_now.total_sum = round((ticket_now.subtotal + ticket_now.vat), 2)
-
-        db.session.add(new_quote_item)
-        db.session.commit()
-
-    query_quote_now = Storage.query.filter_by(
-        ticket_link=ticket_now.id).all()
-
-    return render_template('make_quotation.html', form=form, title='New Quotation', resolved_id=ticket_now, count=0, payload=query_quote_now)
-
-
-@app.route("/make_receipt/<string:ticket_pseudo_id>", methods=['GET', 'POST'])
-@app.route("/make_receipt", methods=['GET', 'POST'])
-@login_required
-def make_receipt(ticket_pseudo_id):
-
-    if not current_user.is_authenticated:
-        flash('you need to login before accessing this page', 'danger')
-        return redirect(url_for('index'))
-
-    ticket_now = Ticket.query.filter_by(pseudo_id=ticket_pseudo_id).first()
-
-    form = Generator()
-    if form.validate_on_submit():
-        entered_item_name = string.capwords(form.item_name.data)
-        ref_item_qtty = form.item_quantity.data
-        ref_unit_price = form.unit_price.data
-        ref_total_price = ref_unit_price * ref_item_qtty
-        ref_total_price = round(ref_total_price, 2)
-
-        new_receipt_item = Storage(item_name=entered_item_name, item_quantity=ref_item_qtty,
-                                   unit_price=ref_unit_price, total_price=ref_total_price, ticket_link=ticket_now.id)
-
-        ticket_now.subtotal = round((ticket_now.subtotal + ref_total_price), 2)
-        ticket_now.vat = round((0.04 * ticket_now.subtotal), 2)
-        ticket_now.total_sum = round((ticket_now.subtotal + ticket_now.vat), 2)
-        ticket_now.no_items += 1
-
-        db.session.add(new_receipt_item)
-        db.session.commit()
-
-    query_receipt_now = Storage.query.filter_by(
-        ticket_link=ticket_now.id).all()
-
-    return render_template('make_receipt.html', form=form, title=f'{ ticket_now.pseudo_id }', resolved_id=ticket_now, count=0, payload=query_receipt_now)
-
-
 @app.route("/all_forms", methods=['GET', 'POST'])
 @login_required
 def all_forms():
@@ -163,7 +92,6 @@ def all_forms():
 
 
 @app.route("/form_viewer/<int:ticket_id>", methods=['GET', 'POST'])
-# @app.route("/form_viewer/<string:ticket_pseudo_id>", methods=['GET', 'POST'])
 def form_viewer(ticket_id):
     call_for_view = Ticket.query.filter_by(id=ticket_id).first()
 
@@ -194,17 +122,43 @@ def form_viewer(ticket_id):
     return render_template('viewer.html', viewer=call_for_view, title=f'{call_for_view.pseudo_id}', resources=resources, form=form, count=0)
 
 
+@app.route("/complete_form/<string:ticket_pseudo_id>", methods=['GET', 'POST'])
+def complete_form(ticket_pseudo_id):
+    main_ticket = Ticket.query.filter_by(pseudo_id=ticket_pseudo_id).first()
+    if main_ticket:
+        resources = Storage.query.filter_by(ticket_link=main_ticket.id).all()
+    return render_template('final_print.html', resources=resources, title=main_ticket.belongs_to, viewer=main_ticket)
+
+
 @app.route("/delete_form/<string:ticket_pseudo_id>", methods=['GET', 'POST'])
 def delete_form(ticket_pseudo_id):
     to_delete_main = Ticket.query.filter_by(pseudo_id=ticket_pseudo_id).first()
-    to_delete_sub = Storage.query.filter_by(
-        ticket_link=to_delete_main.id).all()
+    if to_delete_main:
+        to_delete_sub = Storage.query.filter_by(
+            ticket_link=to_delete_main.id).all()
+        for item in to_delete_sub:
+            db.session.delete(item)
+
     db.session.delete(to_delete_main)
-    for item in to_delete_sub:
-        db.session.delete(item)
     db.session.commit()
 
     return redirect(url_for('index'))
+
+
+@app.route("/delete_item/<int:item_id>", methods=['GET', 'POST'])
+def delete_item(item_id):
+    to_delete_item = Storage.query.get_or_404(item_id)
+    if to_delete_item:
+        source = Ticket.query.get_or_404(to_delete_item.ticket_link)
+        source.subtotal = source.subtotal - to_delete_item.total_price
+        source.vat = round((0.04 * source.subtotal), 2)
+        source.total_sum = round((source.subtotal + source.vat), 2)
+        source.no_items -= 1
+
+        db.session.delete(to_delete_item)
+    db.session.commit()
+
+    return redirect(url_for('form_viewer', ticket_id=source.id))
 
 
 @app.route("/draftify/<string:ticket_pseudo_id>", methods=['GET', 'POST'])

@@ -6,7 +6,6 @@
 /* Themes */
 
 :root{
-
     --white: #ffffff;
     --white2: #eeeeee;
     --white3: #f5f5f5;
@@ -219,6 +218,10 @@ small{
         transition: all .5s;
     }
 
+    .menu{
+        margin-right: 15px;
+    }
+
     #check:checked ~ .navbar-nav{
         left: 0;
     }
@@ -289,7 +292,7 @@ small{
 }
 
 .container-form{
-        padding-top: 12em;
+    padding-top: 12em;
 }
 
 .greetings{
@@ -857,9 +860,9 @@ small{
 }
 
 .column{
-    -ms-flex: 0 0 24%;
-    flex: 0 0 24%;
-    max-width: 24%;
+    -ms-flex: 0 0 19%;
+    flex: 0 0 19%;
+    max-width: 20%;
 }
 
 #num-col{
@@ -867,6 +870,17 @@ small{
     flex: 0 0 8%;
     max-width: 8%;
     font-weight: 600;
+}
+
+#num-col span p{
+    font-size: 9;
+    font-weight: bold;
+    border-radius: 50%;
+    height: 13;
+    width: 13;
+    text-align: center;
+    background-color: var(--red);
+    color: var(--text3)
 }
 
 #caret-col{
@@ -980,8 +994,12 @@ small{
 }
 
 .btn-sec{
-    background: var(--action2);
+    background: none;
+    text-decoration: underline;
+    border: none;
     margin-right: 2em;
+    font-weight: 700;
+    color: var(--text1);
 }
 
 .btn-sec:active{
@@ -999,4 +1017,58 @@ small{
         padding-right: 0;
         width: 70%;
     }
+}
+
+
+.container-slim{
+    margin-right: 22%;
+    margin-left: 22%;
+}
+
+.receipt{
+    margin-top: 8em;
+    background: var(--surface1);
+    color: var(--text1);
+    height: 100vh;
+}
+
+.final-print{
+    display: flex;
+    /*align-content: space-between;*/
+}
+
+.company-head{
+    display: flex;
+    margin-bottom: 0;
+}
+
+.company-head p{
+    font-size: 20px;
+    padding-top: 0.5em;
+    font-weight: bold;
+}
+
+.company-head img{
+    height: 50;
+    width: 50;
+}
+
+.info{
+    float: right;
+    margin-left: 18em;
+    margin-top: 0.1em;
+    line-height: 10px;
+    letter-spacing: 1px;
+}
+
+.del{
+    margin-top: 1em;
+    height: 12;
+    width: 12;
+}
+
+.receipt .column{
+   -ms-flex: 0 0 22%;
+    flex: 0 0 22%;
+    max-width: 25%;
 }

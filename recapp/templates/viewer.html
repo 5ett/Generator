@@ -114,6 +114,9 @@
                                     <div class="column">
                                         <p>{{item.total_price}}</p>
                                     </div>
+                                    <div class="column" id="num-col">
+                                       <span><a href="{{url_for('delete_item', item_id=item.id)}}"><img src="/static/media/del.png" class="del" =""></a></span>
+                                    </div>
                                 </div>
                             {% endfor %}
                             <div class="row vat-row">
@@ -142,8 +145,8 @@
                                 </div>
                             </div>
                             <div class="btn-group">
-                                <button type="submit" href="{{ url_for('draftify', ticket_pseudo_id=viewer.pseudo_id) }}" class="btn btn-sec">Save draft</button>
-                                <button type="submit" class="btn btn-prime">Continue</button>
+                                <a type="submit" href="{{ url_for('draftify', ticket_pseudo_id=viewer.pseudo_id) }}" class="btn btn-sec">Save draft</a>
+                                <a class="btn btn-prime" href="{{url_for('complete_form', ticket_pseudo_id=viewer.pseudo_id) }}">Continue</a>
                             </div>
                         {% else %}
                             <h2 style="text-align: center;">no items have been added to this form yet</h2>

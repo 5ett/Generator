@@ -1,0 +1,100 @@
+{% extends 'origin.html' %}
+
+    {% block head %}
+        <script defer src="../static/scripts/quotation.js"></script>
+    {% endblock %}
+
+    {% block content %}
+
+    <main role="main">
+        <div class="container-slim">
+            <div class="receipt">
+
+                <div class="form-head final-print">
+                    <div class="company-head">
+                        <img src="/static/media/fkt.png" alt="">
+                        <p>FKT LTD</p>
+                    </div>
+                    <div class="info">
+                        <p> 030-3344-321 | 030-3344-321</p>
+                        <p>fktltd@gmail.com</p>
+                    </div>
+                </div>
+
+                <div class="table">
+                    <div class="heads">
+                        <div class="row">
+                            <div class="column" id="num-col">
+                                <h2>#</h2>
+                            </div>
+                            <div class="column">
+                                <h2>Item</h2>
+                            </div>
+                            <div class="column">
+                                <h2>Quantity</h2>
+                            </div>
+                            <div class="column">
+                                <h2>Unit Price</h2>
+                            </div>
+                            <div class="column">
+                                <h2>Price</h2>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="entries">
+                        {% for item in resources %}
+                            <div class="row">
+                                <div class="column" id="num-col">
+                                        <p>{{ resources.index(item) + 1 }}</p>
+                                        </div>
+                                        <div class="column">
+                                            <p>{{ item.item_name }}</p>
+                                        </div>
+                                        <div class="column">
+                                            <p>{{item.item_quantity}}</p>
+                                        </div>
+                                        <div class="column">
+                                            <p>{{item.unit_price}}</p>
+                                        </div>
+                                        <div class="column">
+                                            <p>{{item.total_price}}</p>
+                                        </div>
+                                        <div class="column" id="num-col">
+                                           <span><a href="{{url_for('delete_item', item_id=item.id)}}"><img src="/static/media/del.png" class="del" =""></a></span>
+                                        </div>
+                            </div>
+                        {% endfor %}
+                        <div class="row vat-row">
+                                <div class="column" id="num-col"></div>
+                                <div class="column"></div>
+                                <div class="column"></div>
+                                <div class="column" id="vat">
+                                    <p>Vat 4%</p>
+                                </div>
+                                <div class="column" id="vat-amnt">
+                                    <p>{{viewer.vat}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row total-row">
+                                <div class="column" id="num-col"></div>
+                                <div class="column pseudo" id="num-col"></div>
+                                <div class="column pseudo" id="num-col"></div>
+                                <div class="column rev-pseudo"></div>
+                                <div class="column"></div>
+                                <div class="column" id="total-tag">
+                                    <p>Total</p>
+                                </div>
+                                <div class="column" id="total-amnt">
+                                    <p>{{viewer.total_sum}}</p>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+{% endblock %}

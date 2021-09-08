@@ -43,3 +43,8 @@ darkButton.onclick = () => {
         localStorage.setItem('theme', 'light');
     }
 };
+
+
+if (window.history.replaceState){
+    window.history.replaceState( null, null, window.location.href);
+};
