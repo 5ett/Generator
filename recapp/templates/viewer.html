@@ -23,7 +23,7 @@
                         </a>
                         <ul class="dropdown" id=trop-menu>
                             <li class="dropdown-item">
-                                <a href="{{url_for('index')}}">cancel</a>
+                                <a href="{{ url_for( 'draftify',  ticket_pseudo_id=viewer.pseudo_id ) }}">cancel</a>
                             </li>
 
                             <li class="dropdown-item">
@@ -73,86 +73,51 @@
                     </div>
                 </div>
 
-                <div class="table">
-                    <div class="heads">
-                        <div class="row">
-                            <div class="column" id="num-col">
-                                <h2>#</h2>
-                            </div>
-                            <div class="column">
-                                <h2>Item</h2>
-                            </div>
-                            <div class="column">
-                                <h2>Quantity</h2>
-                            </div>
-                            <div class="column">
-                                <h2>Unit Price</h2>
-                            </div>
-                            <div class="column">
-                                <h2>Price</h2>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="entries">
-                         {% if resources %}
-                            {% for item in resources %}
-                                <div class="row">
-                                    <div class="column" id="num-col">
-                                        <p>{{ resources.index(item) + 1 }}</p>
-                                    </div>
-                                    <div class="column">
-                                        <p>{{item.item_name}}</p>
-                                    </div>
-                                    <div class="column">
-                                        <p>{{item.item_quantity}}</p>
-                                    </div>
-                                    <div class="column">
-                                        <p>{{item.unit_price}}</p>
-                                    </div>
-                                    <div class="column">
-                                        <p>{{item.total_price}}</p>
-                                    </div>
-                                    <div class="column" id="num-col">
-                                       <span><a href="{{url_for('delete_item', item_id=item.id)}}"><img src="/static/media/del.png" class="del" =""></a></span>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                            <div class="row vat-row">
-                                <div class="column" id="num-col"></div>
-                                <div class="column"></div>
-                                <div class="column"></div>
-                                <div class="column" id="vat">
-                                    <p>Vat 4%</p>
-                                </div>
-                                <div class="column" id="vat-amnt">
-                                    <p>{{viewer.vat}}</p>
-                                </div>
-                            </div>
-
-                            <div class="row total-row">
-                                <div class="column" id="num-col"></div>
-                                <div class="column pseudo" id="num-col"></div>
-                                <div class="column pseudo" id="num-col"></div>
-                                <div class="column rev-pseudo"></div>
-                                <div class="column"></div>
-                                <div class="column" id="total-tag">
-                                    <p>Total</p>
-                                </div>
-                                <div class="column" id="total-amnt">
-                                    <p>{{viewer.total_sum}}</p>
-                                </div>
-                            </div>
-                            <div class="btn-group">
-                                <a type="submit" href="{{ url_for('draftify', ticket_pseudo_id=viewer.pseudo_id) }}" class="btn btn-sec">Save draft</a>
-                                <a class="btn btn-prime" href="{{url_for('complete_form', ticket_pseudo_id=viewer.pseudo_id) }}">Continue</a>
-                            </div>
-                        {% else %}
-                            <h2 style="text-align: center;">no items have been added to this form yet</h2>
-                        {% endif %}
-
-
+                <table class="main-table">
+                  <tr class="heads">
+                      <th id="num-col">#</th>
+                      <th>Item</th>
+                      <th>Quantity</th>
+                      <th>Unit Price</th>
+                      <th>Price</th>
+                  </tr>
+                  {% if resources %}
+                    {% for item in resources %}
+                      <tr>
+                          <td id="num-col">{{ resources.index(item) + 1 }}</td>
+                          <td>{{item.item_name}}</td>
+                          <td>{{item.item_quantity}}</td>
+                          <td>{{item.unit_price}}</td>
+                          <td>{{item.total_price}}</td>
+                          <td><a href="{{url_for('delete_item', item_id=item.id)}}"><img src="/static/media/del.png" class="del" =""></a></td>
+                      </tr>
+                    {% endfor %}
+                    <tr id="vat">
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>vat 4%</td>
+                          <td>{{viewer.vat}}</td>
+                          <td></td>
+                      </tr>
+                      <tr id="total">
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>Total</td>
+                          <td>{{viewer.total_sum}}</td>
+                          <td></td>
+                      </tr>
+                {% else %}
+                    <h2 style="text-align: center;">no items have been added to this form yet</h2>
+                {% endif %}
+                </table>
+                {% if resources %}
+                    <div class="btn-group">
+                           <a type="submit" href="{{ url_for( 'draftify', ticket_pseudo_id=viewer.pseudo_id) }}" class="btn btn-sec">Save draft</a>
+                            <a class="btn btn-prime" href="{{url_for('complete_form', ticket_id=viewer.id) }}">Continue</a>
+                      </div>
+                {% endif %}
                     </div>
                 </div>
             </div>

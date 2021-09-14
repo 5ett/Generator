@@ -22,7 +22,7 @@
     --green: #03c162;
     --green2: #169153;
     --red: #FF3457;
-    --neutral: #ffe386;
+    --neutral: #ffd23d;
 }
 
 .light{
@@ -95,7 +95,7 @@ a{
 }
 
 small{
-  font-size: 70%;
+  font-size: 90%;
 }
 
 /* global end */
@@ -852,36 +852,13 @@ small{
     }
 }
 
-.row{
-    width: 100%;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-}
 
-.column{
-    -ms-flex: 0 0 19%;
-    flex: 0 0 19%;
-    max-width: 20%;
-}
-
-#num-col{
-    -ms-flex: 0 0 8%;
-    flex: 0 0 8%;
-    max-width: 8%;
+#num-col,
+.main-table #num-col{
+    text-align: center;
     font-weight: 600;
 }
 
-#num-col span p{
-    font-size: 9;
-    font-weight: bold;
-    border-radius: 50%;
-    height: 13;
-    width: 13;
-    text-align: center;
-    background-color: var(--red);
-    color: var(--text3)
-}
 
 #caret-col{
     display: flex;
@@ -898,8 +875,6 @@ small{
 
 .heads{
     background: var(--surface3);
-    padding-left: 2em;
-    padding-right: 2em;
     color: var(--text2);
 }
 
@@ -909,21 +884,39 @@ small{
     margin-bottom: 2em;
 }
 
-.entries .row{
-    border-bottom: 1px solid var(--grey2);
+table {
+  border-collapse: collapse;
+  width: 100%;
+  color: var(--text1);
 }
 
-.entries .row:last-child{
-    border-bottom: none;
+.main-table{
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+    color: var(--text1);
 }
 
-.heads h2{
-    font-size: 12;
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even){
+    background-color: var(--surface1);
+}
+
+#new-tr:nth-child(odd) {
+    background-color: var(--surface3)
+}
+
+.heads th{
+    font-size: 14;
 }
 
 
-.entries p{
-    font-size: 13;
+td{
+    font-size: 13.5;
     letter-spacing: 0.8px;
 }
 
@@ -970,11 +963,15 @@ small{
 .btn-group{
     display: flex;
     padding-right: 2em;
-    margin-left: 2em;
+    margin-left: 1em;
     margin-bottom: 2em;
     padding-top: 2em;
     float: right;
-    width: 25%;
+    width: 28%;
+}
+
+.btn-group-lg{
+    width: 45%;
 }
 
 .btn{
@@ -983,6 +980,7 @@ small{
     border-radius: 8px;
     border: none;
     cursor: pointer;
+    font-size: 14;
 }
 
 .btn-prime{
@@ -998,7 +996,7 @@ small{
     text-decoration: underline;
     border: none;
     margin-right: 2em;
-    font-weight: 700;
+    font-weight: 400;
     color: var(--text1);
 }
 
@@ -1006,7 +1004,18 @@ small{
     background: var(--action2-active);
 }
 
-.total-row p{
+.btn-warning{
+    background: var(--red);
+    margin-right: 2em;
+}
+
+
+.btn-lg{
+    width: 100%;
+}
+
+#total td,
+.total td{
     font-size: 17px;
     font-weight: 600;
 }
@@ -1062,7 +1071,6 @@ small{
 }
 
 .del{
-    margin-top: 1em;
     height: 12;
     width: 12;
 }
@@ -1072,3 +1080,14 @@ small{
     flex: 0 0 22%;
     max-width: 25%;
 }
+
+.receipt .meta{
+    margin-bottom: 2em;
+    padding-top: 1em;
+}
+
+.receipt .meta-meta small,
+.receipt .meta-meta h2{
+    font-size: 13;
+}
+

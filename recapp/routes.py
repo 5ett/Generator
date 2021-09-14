@@ -43,7 +43,7 @@ def add_head(ticket_type):
         name_to_save = string.capwords(form.name.data)
 
         create_ticket = Ticket(pseudo_id=generated_pseudo_id, belongs_to=name_to_save,
-                               form_type=keys[ticket_type], status='draft', total_sum=0)
+                               form_type=keys[ticket_type], status='new', total_sum=0)
         db.session.add(create_ticket)
         db.session.commit()
 
@@ -122,11 +122,11 @@ def form_viewer(ticket_id):
     return render_template('viewer.html', viewer=call_for_view, title=f'{call_for_view.pseudo_id}', resources=resources, form=form, count=0)
 
 
-@app.route("/complete_form/<string:ticket_pseudo_id>", methods=['GET', 'POST'])
-def complete_form(ticket_pseudo_id):
-    main_ticket = Ticket.query.filter_by(pseudo_id=ticket_pseudo_id).first()
-    if main_ticket:
-        resources = Storage.query.filter_by(ticket_link=main_ticket.id).all()
+@app.route("/complete_form/<int:ticket_id>", methods=['GET', 'POST'])
+def complete_form(ticket_id):
+    main_ticket = Ticket.query.filter_by(id=ticket_id).first()
+    resources = Storage.query.filter_by(ticket_link=ticket_id).all()
+
     return render_template('final_print.html', resources=resources, title=main_ticket.belongs_to, viewer=main_ticket)
 
 
@@ -163,12 +163,11 @@ def delete_item(item_id):
 
 @app.route("/draftify/<string:ticket_pseudo_id>", methods=['GET', 'POST'])
 def draftify(ticket_pseudo_id):
-    keys = {'PRO': 'quotation', 'REC': 'receipt'}
     new_query = Ticket.query.filter_by(pseudo_id=ticket_pseudo_id).first()
     new_query.status = 'draft'
     db.session.commit()
 
-    return redirect(url_for(f'make_{keys[new_query.ticket_type]}'))
+    return redirect(url_for('form_viewer', ticket_id=new_query.id))
 
 
 @app.route("/logout")

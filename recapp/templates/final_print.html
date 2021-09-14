@@ -1,15 +1,17 @@
 {% extends 'origin.html' %}
 
     {% block head %}
-        <script defer src="../static/scripts/quotation.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.js"></script>
+        <script type="text/javascript" src="http://cdn.jsdelivr.net/g/filesaver.js"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='/scripts/print.js') }}"></script>
     {% endblock %}
 
     {% block content %}
 
     <main role="main">
         <div class="container-slim">
-            <div class="receipt">
-
+            <div class="receipt" id="receipts">
                 <div class="form-head final-print">
                     <div class="company-head">
                         <img src="/static/media/fkt.png" alt="">
@@ -21,80 +23,78 @@
                     </div>
                 </div>
 
-                <div class="table">
-                    <div class="heads">
-                        <div class="row">
-                            <div class="column" id="num-col">
-                                <h2>#</h2>
-                            </div>
-                            <div class="column">
-                                <h2>Item</h2>
-                            </div>
-                            <div class="column">
-                                <h2>Quantity</h2>
-                            </div>
-                            <div class="column">
-                                <h2>Unit Price</h2>
-                            </div>
-                            <div class="column">
-                                <h2>Price</h2>
-                            </div>
+                <div>
+                  <div class="meta">
+                        <div class="form-owner" id="owner">
+                            <p>{{ viewer.belongs_to }}</p>
+                        </div>
 
+                        <div class="meta-meta">
+                            <div class="form-id">
+                                <h2>{{ viewer.pseudo_id }}</h2>
+                            </div>
+                            <div class="date">
+                                <small>{{ viewer.issuance_date.date() }}</small>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="entries">
-                        {% for item in resources %}
-                            <div class="row">
-                                <div class="column" id="num-col">
-                                        <p>{{ resources.index(item) + 1 }}</p>
-                                        </div>
-                                        <div class="column">
-                                            <p>{{ item.item_name }}</p>
-                                        </div>
-                                        <div class="column">
-                                            <p>{{item.item_quantity}}</p>
-                                        </div>
-                                        <div class="column">
-                                            <p>{{item.unit_price}}</p>
-                                        </div>
-                                        <div class="column">
-                                            <p>{{item.total_price}}</p>
-                                        </div>
-                                        <div class="column" id="num-col">
-                                           <span><a href="{{url_for('delete_item', item_id=item.id)}}"><img src="/static/media/del.png" class="del" =""></a></span>
-                                        </div>
-                            </div>
-                        {% endfor %}
-                        <div class="row vat-row">
-                                <div class="column" id="num-col"></div>
-                                <div class="column"></div>
-                                <div class="column"></div>
-                                <div class="column" id="vat">
-                                    <p>Vat 4%</p>
-                                </div>
-                                <div class="column" id="vat-amnt">
-                                    <p>{{viewer.vat}}</p>
-                                </div>
-                            </div>
-
-                            <div class="row total-row">
-                                <div class="column" id="num-col"></div>
-                                <div class="column pseudo" id="num-col"></div>
-                                <div class="column pseudo" id="num-col"></div>
-                                <div class="column rev-pseudo"></div>
-                                <div class="column"></div>
-                                <div class="column" id="total-tag">
-                                    <p>Total</p>
-                                </div>
-                                <div class="column" id="total-amnt">
-                                    <p>{{viewer.total_sum}}</p>
-                                </div>
-                            </div>
-                    </div>
                 </div>
+                <table>
+                  <tr class="heads">
+                      <th id="num-col">#</th>
+                      <th>Item</th>
+                      <th>Quantity</th>
+                      <th>Unit Price</th>
+                      <th>Price</th>
+                      <!-- <th></th> -->
+                  </tr>
+                    {% for item in resources %}
+                      <tr id="new-tr">
+                          <td id="num-col">{{ resources.index(item) + 1 }}</td>
+                          <td>{{item.item_name}}</td>
+                          <td>{{item.item_quantity}}</td>
+                          <td>{{item.unit_price}}</td>
+                          <td>{{item.total_price}}</td>
+                          <!-- <td><a href="{{url_for('delete_item', item_id=item.id)}}"><img src="/static/media/del.png" class="del" =""></a></td> -->
+                      </tr>
+                    {% endfor %}
+                    <tr id="new-tr">
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>vat 4%</td>
+                          <td id="vat">{{viewer.vat}}</td>
+                          <!-- <td></td> -->
+                      </tr>
+                      <tr id="new-tr" class="total">
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>Total</td>
+                          <td>{{viewer.total_sum}}</td>
+                          <!-- <td></td> -->
+                      </tr>
+
+                </table>
+            </div>
+            <div class="btn-group btn-group-lg">
+                <a href="{{url_for('form_viewer', ticket_id=viewer.id)}}" class="btn btn-sec">edit items</a>
+                <a href="{{url_for('delete_form', ticket_pseudo_id=viewer.pseudo_id)}}" class="btn btn-warning">delete receipt</a>
+                <button class="btn btn-prime" href="" id="printt">Print</button>
             </div>
         </div>
     </main>
+
+    <script>
+
+        $(document).ready(function() {
+          $('#printt').click(funtion() {
+            domtoimage.toBlob(document.getElementById('receipts')).then(function (blob){
+            window.saveAs(blob, 'my-node.png');
+            });
+          });
+
+
+    </script>
 
 {% endblock %}
