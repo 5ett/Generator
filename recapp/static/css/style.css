@@ -1,7 +1,22 @@
-*{
+*,
+::before,
+::after{
     list-style: none;
     box-sizing: border-box;
 }
+
+/*fonts*/
+
+@font-face {
+    font-family: "Circular-Book";
+    src: url(../fonts/circular/CSBk.woff) format('woff');
+}
+
+@font-face {
+    font-family: "Circular-Bold";
+    src: url(../fonts/circular/CSBd.woff) format('woff');
+}
+/*fonts end*/
 
 /* Themes */
 
@@ -18,9 +33,11 @@
     --blue: #3261fc;
     --blue2: #214ddd;
     --blue3: #5f69f3;
+    --blue5: #283C81;
     --blue4: #4f58d8;
     --green: #03c162;
     --green2: #169153;
+    --green3: #13673D;
     --red: #FF3457;
     --neutral: #ffd23d;
 }
@@ -60,9 +77,9 @@
     --action1-active: var(--blue2);
     --action2: var(--grey2);
     --action2-active: var(--black3);
-    --plaque1: var(--green);
+    --plaque1: var(--green3);
     --plaque1-active: var(--green2);
-    --plaque2: var(--blue);
+    --plaque2: var(--blue5);
     --plaque2-active: var(--blue2);
     --surfake: linear-gradient(to right, var(--black3), var(--white2));
 }
@@ -76,7 +93,7 @@ body{
     padding: 0;
     background: var(--surface3);
     color: var(--text1);
-    font-family: "Neue Haas Grotesk Display Pro";
+    font-family: "Circular-Book";
     transition: background 500ms ease-in-out, color 1000ms ease-in-out;
 }
 
@@ -121,9 +138,10 @@ small{
 
 .navbar-nav{
     height: contain-content;
+    width: 120px;
     margin-top: 0.002em;
     position: absolute;
-    left: 20000;
+    left: 86%;
     float: right;
     /* transition: all .5s; */
 
@@ -135,7 +153,7 @@ small{
     border-bottom-left-radius: 4px;
 
     align-items: center;
-    padding:1em;
+    padding:0.7em;
 
     box-shadow: rgba(2, 8, 20, 0.1) 0px 0.175em 0.5em;
 
@@ -143,19 +161,17 @@ small{
 }
 
 .nav-item{
-    padding-bottom: 0.5em;
-    margin-bottom: 0.3em;
-    border-bottom: 0.8px solid var(--box-shadow);
+
 }
 
-.theme{
+/*.theme{
     width: 100%;
     height: 100%;
     size: 0.7rem;
     color: var(--text1)
-}
+}*/
 
-.theme::before{
+/*.theme::before{
     content: ' ';
     border: 2px solid var(--border-col);
     border-radius: 50%;
@@ -165,28 +181,43 @@ small{
     vertical-align: middle;
     margin-right: 10px;
     background: var(--text1);
-}
+}*/
 
 .menu{
+    float: right;
+    display: flex;
+    width: 7%;
+    margin-top: 0.8em;
+    padding-right: 1.4em;
+}
+
+.menu-acc{
     font-size: 27px;
-    margin-top: 0.7em;
+    margin-top: 0.07em;
     font-weight: 400;
     color: var(--text1);
     float: right;
     line-height: 90px;
     cursor: pointer;
     display: block;
-    pointer-events: auto;
+    /*pointer-events: auto;*/
+    cursor: pointer;
+}
+
+#light{
+    margin-top: 0.4em;
+    cursor: pointer;
+    margin-right: 0.74em;
 }
 
 #check{
     display: none;
 }
 
-#check:checked ~ .navbar-nav{
+/*#check:checked ~ .navbar-nav{
     opacity: 1;
-    left: 86%;
-}
+    left: 50%;
+}*/
 
 
 @media (max-width: 600px){
@@ -282,23 +313,103 @@ small{
 
 /* alerts end */
 
+
 /* main */
+
+main{
+    display: flex;
+}
+
+/* main end */
+
+
+/* sidebar */
+
+.sidebar{
+    float: left;
+    width: 25%;
+    padding-top: 7em;
+    /*position: fixed;*/
+    padding-left: 4em;
+    padding-right: 4em;
+}
+
+.side-nav{
+    position: fixed;
+}
+
+.side-nav li{
+    margin-bottom: 0.6em;
+    font-size: 15;
+    padding: 0.8em;
+    transition: all .2;
+    display: flex;
+    color: #6c757d !important;
+    cursor: pointer;
+}
+
+.side-nav li a{
+    float: right;
+    margin-top: 0.4em;
+}
+
+.side-nav li:hover{
+    background-color: var(--grey2);
+    border-radius: 9px;
+    color: var(--text3);
+    font-weight: lighter;
+}
+
+.side-nav li:hover a{
+    color: var(--text3);
+}
+
+.side-nav li svg{
+    padding-top: 0.2em;
+    fill: #6c757d;
+    margin-right: 0.4em;
+    margin-left: 0.2em;
+    float: left;
+    cursor: pointer;
+}
+
+.side-nav li:hover .vector{
+    fill: var(--text3)
+}
+
+/* sidebar end */
+
+
+/* main-content */
+
+.main-content{
+    float: right;
+    width: 70%;
+}
 
 .container,
 .container-form{
     padding-top: 6em;
-    padding-left: 3em;
-    padding-right: 3em;
+    padding-left: 2em;
+    padding-right: 2em;
 }
 
 .container-form{
     padding-top: 12em;
 }
 
+.container-form{
+    width: 100%;
+}
+
 .greetings{
     font-size: 14px;
-    margin-bottom: 2em;
+    margin-bottom: 3em;
     word-spacing: 3px;
+}
+
+.greetings h1{
+    line-height: 1px;
 }
 
 .form-type{
@@ -323,11 +434,17 @@ small{
 }
 
 .plaque{
-    width: 100%;
-    padding: 2em;
-    padding-bottom: 2.5em;
+    max-width: 95%;
+    padding: 1.7em;
+    padding-bottom: 2.2em;
     background: var(--surface1);
-    margin-bottom: 4em;
+    margin-bottom: 2.9em;
+
+    box-shadow: rgba(2, 8, 20, 0.1) 0px 0.175em 0.5em;
+}
+
+::-webkit-scrollbar{
+    display: none;
 }
 
 .full-radius,
@@ -344,12 +461,14 @@ small{
 }
 
 .half-radius{
-    border-top-left-radius: 32px;
-    border-top-right-radius: 32px;
+    border-top-left-radius: 42px;
+    border-top-right-radius: 42px;
+    border-bottom-left-radius: 42px;
 }
 
 .plaque-items{
     display: flex;
+    overflow-x: scroll;
 }
 
 .plaque h1{
@@ -383,19 +502,21 @@ small{
 .plaque-lg{
     padding: 1em 2em 1em 2em ;
     color: var(--text3);
-    width: 260px;
-    border-radius: 27px;
+    width: 280px;
+    border-radius: 34px;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
 }
 
 .plaque-lg h2{
-    font-size: 15;
+    font-size: 17;
+    font-family: 'Circular-Bold';
+    letter-spacing: 0.6px;
 }
 
 .plaque-lg p,
 .plaque-sm p{
-    font-size: 12;
-    letter-spacing: 0.6px;
+    font-size: 13;
+    letter-spacing: 0.2px;
 }
 
 .plaque-sm{
@@ -403,7 +524,7 @@ small{
     color: var(--text3);
     width: 190px;
     background: var(--grey2);
-    margin-right: 2em;
+    margin-right: 1.6em;
     border-radius: 27px;
 }
 
@@ -472,7 +593,7 @@ small{
     .status
 } */
 
-/* main end */
+/* main-content end */
 
 
 /*owner head*/

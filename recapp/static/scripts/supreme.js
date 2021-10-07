@@ -1,6 +1,6 @@
 const greetings = document.querySelector(".greetings");
 const title = document.querySelector(".logo");
-const menu = document.querySelector(".menu");
+const menu = document.querySelector(".menu-acc");
 // const navdrop = document.querySelector(".navbar-nav");
 const navdrop = document.getElementById('tropdown');
 
@@ -23,14 +23,21 @@ menu.onclick = () => {
         opacity: 0;
     `) {
 
-        heads.fromTo(
-            navdrop, 0.2, {opacity: 0, y:-15}, {opacity: 1, y:0}
-        )
+        navdrop.style.cssText=`
+        opacity: 1;
+    `
+        // heads.fromTo(
+        //     navdrop, 0.2, {opacity: 0, y:-15}, {opacity: 1, y:0}
+        // )
     } else{
-        heads.fromTo(
-            navdrop, 0.2, {opacity: 1, y:0}, {opacity: 0, y:1}
-        )
+
+        navdrop.style.cssText=`
+        opacity: 0;
+    `
+        // heads.fromTo(
+        //     navdrop, 0.2, {opacity: 1, y:0}, {opacity: 0, y:1}
+        // )
     }
 
-    
+
 };
