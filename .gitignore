@@ -1,1 +1,2 @@
-recapp/.env
+/recapp/.env
+/recapp/receipts.db/

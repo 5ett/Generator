@@ -5,17 +5,17 @@
     {% endblock %}
 
     {% block content %}
-    <main role="main">
-        <div class="container">
-            <div class="form-type">
-            {% if viewer.form_type == 'REC' %}
-                <h3>Receipt</h3>
-            {% else %}
-                <h3>Quotation</h3>
-            {% endif %}
-            </div>
+    <div class="container">
 
-            <div class="plaque half-radius for-form">
+      <div class="form-type">
+        {% if viewer.form_type == 'REC' %}
+          <h3>Receipt</h3>
+        {% else %}
+          <h3>Quotation</h3>
+        {% endif %}
+      </div>
+
+            <div class="plaque top-radius for-form">
                 <div>
                     <li id="form-dropdown">
                         <a href="#" class="caret" id="caret">
@@ -37,22 +37,25 @@
                     <form action="" class="" method="POST">
                         {{ form.hidden_tag() }}
                         <div class="generator">
-                            {{ form.item_name(class='top-off', id="item-name", placeholder='item name') }}
+                            <div>
+                                {{ form.item_name(class='top-on', id="item-name", placeholder='item name') }}
+                            </div>
 
+                            <div class="q-n-p">
+                                {{ form.item_quantity(class='top-on', id="item-quantity", placeholder='Quantity') }}
 
+                                {{ form.unit_price(class='top-on', id="unit_price", placeholder='Unit Price') }}
+                            </div>
 
-                            {{ form.item_quantity(class='top-off', id="item-quantity", placeholder='Quantity') }}
-
-
-
-                            {{ form.unit_price(class='top-off', id="unit_price", placeholder='Unit Price') }}
-
-
-                            {{ form.add(class='btn-round') }}
+                            {{ form.add(class='btn btn-prime gen-btn') }}
                         </div>
                     </form>
+
                 </div>
 
+            </div>
+
+            <div class="plaque meta-bar for-form">
                 <div class="meta">
                         <div class="form-owner">
                             <p>{{ viewer.belongs_to }}</p>
@@ -71,7 +74,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+            </div>
 
                 <table class="main-table">
                   <tr class="heads">
@@ -121,7 +124,5 @@
                     </div>
                 </div>
             </div>
-
         </div>
-    </main>
 {% endblock %}

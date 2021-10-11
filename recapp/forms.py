@@ -28,7 +28,7 @@ class Generator(FlaskForm):
     item_name = StringField(validators=[DataRequired()])
     item_quantity = IntegerField(validators=[DataRequired()])
     unit_price = FloatField(validators=[DataRequired()])
-    add = SubmitField('+')
+    add = SubmitField('add item')
 
 
 class Search(FlaskForm):
