@@ -173,7 +173,6 @@ small{
     /* transition: opacity .15s ease-out; */
 }
 
-
 .menu{
     float: right;
     display: flex;
@@ -184,19 +183,13 @@ small{
 
 .menu-acc{
     /*font-size: 27px;*/
-    margin-top: 0.07em;
-    font-weight: 400;
-    fill: var(--text1);
-    float: right;
-    line-height: 90px;
-    cursor: pointer;
-    display: block;
 }
 
 .has-dropdown:focus-within #tropdown{
     opacity: 1;
     pointer-events: auto;
 }
+
 
 /*.has-dropdown:hover #tropdown{
     opacity: 1;
@@ -297,7 +290,6 @@ main{
         flex-direction: column-reverse;
     }
 }
-
 /* main end */
 
 
@@ -316,6 +308,7 @@ main{
 }
 
 .side-nav .nav-item{
+
     margin-bottom: 0.6em;
     font-size: 15;
     padding: 0.8em;
@@ -443,7 +436,6 @@ main{
     .faux{
         display: block;
     }
-
 }
 
 /* sidebar end */
@@ -593,6 +585,7 @@ main{
     color: var(--text3);
     width: 280px;
     border-radius: 23px;
+    border-radius: 34px;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
 }
 
