@@ -51,7 +51,7 @@ def add_head(ticket_type):
         # return redirect(url_for(f'make_{ticket_type}', ticket_pseudo_id=generated_pseudo_id))
         return redirect(url_for('form_viewer', ticket_id=ticket.id))
 
-    return render_template('add_head.html', form=form, ticket_type=ticket_type, title='Add Head')
+    return render_template('add_head.html', form=form, ticket_type=ticket_type, title=f'Add Head-{keys[ticket_type]}')
 
 
 @app.route("/all_forms", methods=['GET', 'POST'])

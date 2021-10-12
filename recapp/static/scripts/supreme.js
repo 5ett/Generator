@@ -20,24 +20,35 @@ menu.onclick = () => {
     )
 
     if (navdrop.style.cssText=`
-        opacity: 0;
-    `) {
+         opacity: 1;
+     `) {
 
         navdrop.style.cssText=`
-        opacity: 1;
-    `
-        // heads.fromTo(
-        //     navdrop, 0.2, {opacity: 0, y:-15}, {opacity: 1, y:0}
-        // )
-    } else{
-
-        navdrop.style.cssText=`
-        opacity: 0;
-    `
-        // heads.fromTo(
-        //     navdrop, 0.2, {opacity: 1, y:0}, {opacity: 0, y:1}
-        // )
+         opacity: 1;
     }
 
+    // heads.fromTo(
+    //         navdrop, 0.2, {opacity: 0, y:-15}, {opacity: 1, y:0}
+    //     )
+
+    // if (navdrop.style.cssText=`
+    //     opacity: 0;
+    // `) {
+
+    // //     navdrop.style.cssText=`
+    // //     opacity: 1;
+    // // `
+    //     heads.fromTo(
+    //         navdrop, 0.2, {opacity: 0, y:-15}, {opacity: 1, y:0}
+    //     )}
+    // } else{
+
+    //     navdrop.style.cssText=`
+    //     opacity: 0;
+    // `
+    //     heads.fromTo(
+    //         navdrop, 0.2, {opacity: 1, y:0}, {opacity: 0, y:1}
+    //     )
+    // }
 
 };

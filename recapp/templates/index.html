@@ -95,16 +95,16 @@
                             <div class="fields">
                                 <div class="">
                                     {% if form.username.errors %}
-                                        {{form.username(class='top-off filler is-invalid', placeholder='Name or Username')}}
+                                        {{form.username(class='top-on filler is-invalid', placeholder='Name or Username')}}
                                         {% for error in form.username.errors %}
                                             <div class="invalid-feedback"><span>{{error}}</span></div>
                                         {% endfor %}
                                     {% else %}
-                                        {{ form.username(class='top-off filler', id="head", placeholder='Name or Username') }}
+                                        {{ form.username(class='top-on filler', id="head", placeholder='Name or Username') }}
                                     {% endif %}
                                 </div>
                                 <div>
-                                    {{ form.password(class='top-off filler', id="head", placeholder='Password') }}
+                                    {{ form.password(class='top-on filler', id="head", placeholder='Password') }}
                                 </div>
                             </div>
 
