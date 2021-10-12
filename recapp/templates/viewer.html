@@ -111,9 +111,9 @@
                           <td>{{viewer.total_sum}}</td>
                           <td></td>
                       </tr>
-                {% else %}
-                    <h2 style="text-align: center;">no items have been added to this form yet</h2>
-                {% endif %}
+                  {% else %}
+                      <h2 style="text-align: center;">no items have been added to this form yet</h2>
+                  {% endif %}
                 </table>
                 {% if resources %}
                     <div class="btn-group">
@@ -121,8 +121,5 @@
                             <a class="btn btn-prime" href="{{url_for('complete_form', ticket_id=viewer.id) }}">Continue</a>
                       </div>
                 {% endif %}
-                    </div>
-                </div>
             </div>
-        </div>
 {% endblock %}

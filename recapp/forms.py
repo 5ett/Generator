@@ -33,4 +33,4 @@ class Generator(FlaskForm):
 
 class Search(FlaskForm):
     search_bar = StringField(validators=[DataRequired()])
-    search_action = SubmitField('O')
+    search_action = SubmitField("let's go")
