@@ -1,11 +1,12 @@
 const type = document.querySelector(".form-type");
 const title = document.querySelector(".logo");
 const menu = document.querySelector(".menu");
+const alerta = document.getElementById('alert')
 
 // const dropdown = document.getElementsById('form-dropdown')
 // const navdrop = document.getElementById('tropdown');
 // const totem = document.getElementsById('caret');
-// const minimenu = document.getElementById('trop-menu') 
+// const minimenu = document.getElementById('trop-menu')
 
 const portals = new TimelineMax();
 
@@ -15,6 +16,10 @@ portals.fromTo(
 
 portals.fromTo(
     type, 0.6, {opacity: 0, y: -15}, {opacity: 1, y:0}
+)
+
+portals.fromTo(
+    alert, 1, {opacity: 0, y: -6}, {opacity: 1, y:0}
 )
 
 menu.onclick = () => {
@@ -34,5 +39,5 @@ menu.onclick = () => {
             navdrop, 0.2, {opacity: 1, y:0}, {opacity: 0, y:1}
         )
     }
-    
+
 };

@@ -4,35 +4,103 @@
         <script defer src="../static/scripts/receipt.js"></script>
     {% endblock %}
 
+    {% block large_btn %}
+      <li class="large-btn pre-faux">
+        {% if viewer.form_type == 'REC' %}
+          <a href="{{url_for('add_head', ticket_type='quote')}}">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="75" height="75" viewBox="0 0 111 111">
+              <defs>
+                <filter id="Rectangle_70" x="0" y="0" width="111" height="111" filterUnits="userSpaceOnUse">
+                  <feOffset dx="3" input="SourceAlpha"/>
+                  <feGaussianBlur stdDeviation="7.5" result="blur"/>
+                  <feFlood flood-opacity="0.161"/>
+                  <feComposite operator="in" in2="blur"/>
+                  <feComposite in="SourceGraphic"/>
+                </filter>
+              </defs>
+              <g id="Group_80" data-name="Group 80" transform="translate(-109.5 -1126.5)">
+                <g transform="matrix(1, 0, 0, 1, 109.5, 1126.5)" filter="url(#Rectangle_70)">
+                  <rect id="Rectangle_70-2" data-name="Rectangle 70" width="66" height="66" rx="10" transform="translate(19.5 22.5)"/>
+                </g>
+                <path id="Union_3" data-name="Union 3" d="M13.778,32V18.222H0V13.778H13.778V0h4.445V13.778H32v4.444H18.222V32Z" transform="translate(146 1166)" fill="#fff"/>
+              </g>
+            </svg>
+          </a>
+
+        <p><small> make qoute</small></p>
+        {% else %}
+          <a href="{{url_for('add_head', ticket_type='receipt')}}">
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="75" height="75" viewBox="0 0 111 111">
+                <defs>
+                  <filter id="Rectangle_70" x="0" y="0" width="111" height="111" filterUnits="userSpaceOnUse">
+                    <feOffset dx="3" input="SourceAlpha"/>
+                    <feGaussianBlur stdDeviation="7.5" result="blur"/>
+                    <feFlood flood-opacity="0.161"/>
+                    <feComposite operator="in" in2="blur"/>
+                    <feComposite in="SourceGraphic"/>
+                  </filter>
+                </defs>
+                <g id="Group_80" data-name="Group 80" transform="translate(-109.5 -1126.5)">
+                  <g transform="matrix(1, 0, 0, 1, 109.5, 1126.5)" filter="url(#Rectangle_70)">
+                    <rect id="Rectangle_70-2" data-name="Rectangle 70" width="66" height="66" rx="10" transform="translate(19.5 22.5)"/>
+                  </g>
+                  <path id="Union_3" data-name="Union 3" d="M13.778,32V18.222H0V13.778H13.778V0h4.445V13.778H32v4.444H18.222V32Z" transform="translate(146 1166)" fill="#fff"/>
+                </g>
+              </svg>
+          </a>
+          <p><small>make receipt</small></p>
+        {% endif %}
+      </li>
+    {% endblock %}
+
     {% block content %}
     <div class="container">
-
-      <div class="form-type">
-        {% if viewer.form_type == 'REC' %}
-          <h3>Receipt</h3>
-        {% else %}
-          <h3>Quotation</h3>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages  %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{category}}" id="alert">
+              <small>{{ message }}</small>
+            </div>
+          {% endfor %}
         {% endif %}
-      </div>
+      {% endwith %}
+
 
             <div class="plaque top-radius for-form">
-                <div>
-                    <li id="form-dropdown">
-                        <a href="#" class="caret" id="caret">
+                    <div class="form-type">
+                      {% if viewer.form_type == 'REC' %}
+                        <h3>Receipt</h3>
+                      {% else %}
+                        <h3>Quotation</h3>
+                      {% endif %}
+                          <li id="form-dropdown">
+                              <a href="#"  id="">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 28 28">
+                                    <g id="Group_79" data-name="Group 79" transform="translate(-662 -226)">
+                                      <g id="Group_13" data-name="Group 13" transform="translate(-1148 -89)">
+                                        <g id="Ellipse_4" data-name="Ellipse 4" transform="translate(1810 315)" fill="none" stroke-width="3">
+                                          <circle cx="14" cy="14" r="14" stroke="none"/>
+                                          <circle cx="14" cy="14" r="12.5" fill="none"/>
+                                        </g>
+                                      </g>
+                                      <path id="Path_29" data-name="Path 29" d="M17.953,9.354l-4.73,4.73-4.73-4.73a1.215,1.215,0,1,0-1.719,1.719l5.6,5.6a1.214,1.214,0,0,0,1.719,0l5.6-5.6a1.214,1.214,0,0,0,0-1.719A1.24,1.24,0,0,0,17.953,9.354Z" transform="translate(662.582 228.557)"/>
+                                    </g>
+                                  </svg>
 
-                        </a>
-                        <ul class="dropdown" id=trop-menu>
-                            <li class="dropdown-item">
-                                <a href="{{ url_for( 'draftify',  ticket_pseudo_id=viewer.pseudo_id ) }}">cancel</a>
-                            </li>
 
-                            <li class="dropdown-item">
-                                <a href="{{url_for('delete_form', ticket_pseudo_id=viewer.pseudo_id)}}">delete</a>
-                            </li>
-                        </ul>
-                    </li>
-                </div>
+                              </a>
+                              <ul class="dropdown" id=trop-menu>
+                                  <li class="dropdown-item">
+                                      <!-- <a href="{{ url_for( 'draftify',  ticket_pseudo_id=viewer.pseudo_id ) }}">cancel</a> -->
+                                      <a href="{{ url_for( 'index' ) }}">cancel</a>
+                                  </li>
 
+                                  <li class="dropdown-item">
+                                      <a href="{{url_for('delete_form', ticket_pseudo_id=viewer.pseudo_id)}}">delete</a>
+                                  </li>
+                              </ul>
+                          </li>
+                    </div>
                 <div class="form editor">
                     <form action="" class="" method="POST">
                         {{ form.hidden_tag() }}
@@ -83,6 +151,7 @@
                       <th>Quantity</th>
                       <th>Unit Price</th>
                       <th>Price</th>
+                      <th></th>
                   </tr>
                   {% if resources %}
                     {% for item in resources %}
@@ -121,5 +190,5 @@
                             <a class="btn btn-prime" href="{{url_for('complete_form', ticket_id=viewer.id) }}">Continue</a>
                       </div>
                 {% endif %}
-            </div>
+    </div>
 {% endblock %}

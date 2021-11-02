@@ -41,3 +41,43 @@
 .side-nav li:hover .vector{
     fill: var(--border-col)
 }
+
+
+
+
+
+<!-- <div class="cancel">
+                        <li class="elipses">
+                            <a href="#" class="caret"></a>
+                            <ul class="dropdown">
+                                <li class="dropdown-item">
+                                    <a href="{{ url_for('index') }}">cancel</a>
+                                </li>
+                            </ul>
+                        </li>
+                     </div> -->
+
+
+
+try:
+            search_param = form.search_bar.data.split(':')
+            if search_param[0] == 'quantity':
+                search_input = int(search_param[1])
+                return_query = Storage.query.filter_by(
+                    item_quantity=search_input).order_by(Storage.id.desc()).all()
+
+            elif search_param[0] == 'price':
+                search_input = float(search_param[1])
+
+                return_query_batch = Ticket.query.filter_by(
+                    total_sum=search_input).order_by(Ticket.id.desc()).all()
+                if return_query_batch:
+                    payload.append(return_query_batch)
+
+                return_query_individual = Storage.query.filter_by(
+                    total_price=search_input).order_by(Storage.id.desc()).all()
+                if return_query_individual:
+                    payload.append(return_query_batch)
+        except:
+            return_query = Ticket.query.filter_by(
+                belongs_to=form.search_bar.data).order_by(Ticket.id.desc()).all()

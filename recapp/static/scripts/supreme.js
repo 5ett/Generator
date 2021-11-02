@@ -3,6 +3,8 @@ const title = document.querySelector(".logo");
 const menu = document.querySelector(".menu-acc");
 // const navdrop = document.querySelector(".navbar-nav");
 const navdrop = document.getElementById('tropdown');
+const alert = document.querySelector('#alert');
+const form2 = document.querySelector('#addhead')
 
 const heads = new TimelineMax();
 
@@ -14,42 +16,50 @@ heads.fromTo(
     greetings, 0.6, {opacity: 0, y: -15}, {opacity: 1, y:0}
 )
 
-menu.onclick = () => {
-    heads.fromTo(
-        menu, 0.2, {opacity: 0, y:-4}, {opacity: 1, y:0}
-    )
+heads.fromTo(
+    alert, 0.6, {opacity: 0, y: -6}, {opacity: 1, y:0}
+)
 
-    if (navdrop.style.cssText=`
-         opacity: 1;
-     `) {
+heads.fromTo(
+    form2, 0.6, {opacity: 0, x: -6}, {opacity: 1, y:0}
+);
 
-        navdrop.style.cssText=`
-         opacity: 1;
-    }
+// menu.onclick = () => {
+//     heads.fromTo(
+//         menu, 0.2, {opacity: 0, y:-4}, {opacity: 1, y:0}
+//     )
 
-    // heads.fromTo(
-    //         navdrop, 0.2, {opacity: 0, y:-15}, {opacity: 1, y:0}
-    //     )
+//     if (navdrop.style.cssText=`
+//          opacity: 1;
+//      `) {
 
-    // if (navdrop.style.cssText=`
-    //     opacity: 0;
-    // `) {
+//         navdrop.style.cssText=`
+//          opacity: 1;
+//     }
 
-    // //     navdrop.style.cssText=`
-    // //     opacity: 1;
-    // // `
-    //     heads.fromTo(
-    //         navdrop, 0.2, {opacity: 0, y:-15}, {opacity: 1, y:0}
-    //     )}
-    // } else{
+//     // heads.fromTo(
+//     //         navdrop, 0.2, {opacity: 0, y:-15}, {opacity: 1, y:0}
+//     //     )
 
-    //     navdrop.style.cssText=`
-    //     opacity: 0;
-    // `
-    //     heads.fromTo(
-    //         navdrop, 0.2, {opacity: 1, y:0}, {opacity: 0, y:1}
-    //     )
-    // }
+//     // if (navdrop.style.cssText=`
+//     //     opacity: 0;
+//     // `) {
+
+//     // //     navdrop.style.cssText=`
+//     // //     opacity: 1;
+//     // // `
+//     //     heads.fromTo(
+//     //         navdrop, 0.2, {opacity: 0, y:-15}, {opacity: 1, y:0}
+//     //     )}
+//     // } else{
+
+//     //     navdrop.style.cssText=`
+//     //     opacity: 0;
+//     // `
+//     //     heads.fromTo(
+//     //         navdrop, 0.2, {opacity: 1, y:0}, {opacity: 0, y:1}
+//     //     )
+//     // }
 
 
-};
+// };

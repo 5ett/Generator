@@ -2,122 +2,76 @@
 
 
 {% block content %}
-    <main role="main">
         <div class="container">
-            <div class="form-type">
-                <div class="form">
-                    <form class="generator for-search">
-                        <div class="search">
-                            {{ form.search_bar(class='top-on', placeholder='search') }}
+              <!-- <div class="alert alert-danger">
+                <small> asshole is what you are!</small>
+              </div> -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                  {% if messages  %}
+                      {% for category, message in messages %}
+                        <div class="alert alert-{{category}}" id="alert">
+                          <small>{{ message }}</small>
                         </div>
+                      {% endfor %}
+                  {% endif %}
+                {% endwith %}
 
-                            {{ form.search_action(class='search-btn gen-btn btn') }}
+            <div class="plaque top-radius for-form flat-top">
+                <div class="form-type">
+                    <h3>Records</h3>
+                </div>
+                <div class="form">
+                    <form class="generator for-search" method="POST">
+                      {{ form.hidden_tag() }}
+                      <div class="search">
+                          {{ form.search_bar(class='top-on', placeholder='search') }}
+                      </div>
+                        {{ form.search_action(class='search-btn gen-btn btn') }}
                     </form>
                 </div>
             </div>
 
-           {% if payload %}
-                {% for element in payload %}}
-                    {% if element.form_type == 'PRO' %}
-                       <div class="plaque r-margin">
-                           <h1>Quotations</h1>
-                           <div>
-                                <a href="{{ url_for('form_viewer', ticket_id=element.id) }}">
-                                    <div class="plaque-sm">
-                                            <div class="form-id">
-                                                <h2>{{ element.pseudo_id }}</h2>
-                                            </div>
-                                            <div class="details">
-                                                <p>{{ element.belongs_to }}</p>
-                                                <p><em>{{element.no_items}} items</em></p>
-                                            </div>
-                                            <div class="status {{ element.status }}">
-                                                <small>{{ element.status }}</small>
-                                            </div>
-                                    </div>
-                                </a>
-                            </div>
-                       </div>
+            <table class="main-table">
+                  <tr class="heads">
+                      <th id="num-col">ID</th>
+                      <th>Owner</th>
+                      <th>No. Items</th>
+                      <th>Total(vat incl)</th>
+                      <th>Date</th>
+                      <th>Type</th>
+                      <th>Status</th>
+                  </tr>
+                  {% if payload %}
+                    {% for item in payload %}
+                      <tr>
+                        <td id="num-col"><a href="">{{ bucket.index(item)+1 }}</a></td>
+                        <td><a href="">{{item.belongs_to}}</a></td>
+                        <td>{{item.no_items}}</td>
+                        <td>{{item.total_sum}}</td>
+                        <td>{{item.issuance_date.date()}}</td>
+                        <td>{{ item.form_type }}</td>
+                        <td id="table-stat"><div class="status st-sm {{ item.status }}"> {{ item.status }} </div></td>
+                      </tr>
+                    {% endfor %}
+                  {% else %}
+                    {% if bucket %}
+                        {% for item in bucket %}
+                          <tr>
+                              <td id="num-col"><a href="">{{ bucket.index(item)+1 }}</a></td>
+                              <td><a href="{{ url_for('form_viewer', ticket_id=item.id) }}">{{item.belongs_to}}</a></td>
+                              <td>{{item.no_items}}</td>
+                              <td>{{item.total_sum}}</td>
+                              <td>{{item.issuance_date.date()}}</td>
+                              <td>{{ item.form_type }}</td>
+                              <td id="table-stat"><div class="status st-sm {{ item.status }}"> {{ item.status }} </div></td>
+                          </tr>
+                        {% endfor %}
                     {% else %}
-                       <div class="plaque r-margin">
-                           <h1>Receipts</h1>
-                           <div>
-                                <a href="{{ url_for('form_viewer', ticket_id=element.id) }}">
-                                    <div class="plaque-sm">
-                                            <div class="form-id">
-                                                <h2>{{ element.pseudo_id }}</h2>
-                                            </div>
-                                            <div class="details">
-                                                <p>{{ element.belongs_to }}</p>
-                                                <p><em>{{element.no_items}} items</em></p>
-                                            </div>
-                                            <div class="status {{ element.status }}">
-                                                <small>{{ element.status }}</small>
-                                            </div>
-                                    </div>
-                                </a>
-                            </div>
-                       </div>
+                        <h2 style="text-align: center;">there are no forms in your records</h2>
                     {% endif %}
-                {% endfor %}
-           {% else %}
-                 <div class="plaque r-margin">
-                <h1>Quotations</h1>
-                {% if viewer %}
-                    {% for element in viewer %}
-                        {% if element.form_type == 'PRO' %}
+                  {% endif %}
+                </table>
 
-                            <div>
-                                <a href="{{ url_for('form_viewer', ticket_id=element.id) }}">
-                                    <div class="plaque-sm">
-                                            <div class="form-id">
-                                                <h2>{{ element.pseudo_id }}</h2>
-                                            </div>
-                                            <div class="details">
-                                                <p>{{ element.belongs_to }}</p>
-                                                <p><em>{{element.no_items}} items</em></p>
-                                            </div>
-                                            <div class="status {{ element.status }}">
-                                                <small>{{ element.status }}</small>
-                                            </div>
-                                    </div>
-                                </a>
-                            </div>
-                        {% else %}
-                            <h3 style="text-align: center;">no quotations added to database yet</h3>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
             </div>
 
-            <div class="plaque r-margin">
-                <h1>Receipts</h1>
-                {% if viewer %}
-                    {% for element in viewer %}
-                        {% if element.form_type == 'REC' %}
-                            <div>
-                                <a href="{{ url_for('form_viewer', ticket_id=element.id) }}">
-                                    <div class="plaque-sm">
-                                            <div class="form-id">
-                                                <h2>{{ element.pseudo_id }}</h2>
-                                            </div>
-                                            <div class="details">
-                                                <p>{{ element.belongs_to }}</p>
-                                                <p><em>{{element.no_items}} items</em></p>
-                                            </div>
-                                            <div class="status {{ element.status }}">
-                                                <small>{{ element.status }}</small>
-                                            </div>
-                                    </div>
-                                </a>
-                            </div>
-                        {% else %}
-                            <h3 style="text-align: center;">no quotations added to database yet</h3>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-            </div>
-           {% endif %}
-        </div>
-    </main>
 {% endblock %}

@@ -11,17 +11,10 @@ from flask_login import current_user, login_user, logout_user, login_required
 def index():
     time_now = greeting_tag()
     form = Login()
+    search = Search()
     if form.validate_on_submit():
-        try:
-            user_valid = User.query.filter_by(
-                username=form.username.data).first()
-        except:
-            user_valid = User.query.filter_by(name=form.username.data).first()
-        else:
-            flash('Wrong credentials', 'danger')
+        user_valid = User.query.filter_by(username=form.username.data).first()
 
-        # pass_auth = crypt.check_password_hash(
-        #     user_valid.password, form.password.data)
         if user_valid and crypt.check_password_hash(user_valid.password, form.password.data):
             login_user(user_valid)
         else:
@@ -29,7 +22,7 @@ def index():
 
     recent_forms = Ticket.query.order_by(Ticket.id.desc()).all()
 
-    return render_template('index.html', form=form, recent_forms=recent_forms, time=time_now)
+    return render_template('index.html', form=form, search=search, recent_forms=recent_forms, time=time_now)
 
 
 @app.route("/add_head/<string:ticket_type>", methods=['GET', 'POST'])
@@ -61,34 +54,18 @@ def all_forms():
         flash('you need to login before accessing this page', 'danger')
         return redirect(url_for('index'))
 
+    payload = []
     form = Search()
     if form.validate_on_submit():
-        payload = []
-        try:
-            search_param = form.search_bar.data.split(':')
-            if search_param[0] == 'quantity':
-                search_input = int(search_param[1])
-                return_query = Storage.query.filter_by(
-                    item_quantity=search_input).order_by(Storage.id.desc()).all()
-
-            elif search_param[0] == 'price':
-                search_input = float(search_param[1])
-
-                return_query_batch = Ticket.query.filter_by(
-                    total_sum=search_input).order_by(Ticket.id.desc()).all()
-                if return_query_batch:
-                    payload.append(return_query_batch)
-
-                return_query_individual = Storage.query.filter_by(
-                    total_price=search_input).order_by(Storage.id.desc()).all()
-                if return_query_individual:
-                    payload.append(return_query_batch)
-        except:
-            return_query = Ticket.query.filter_by(
-                belongs_to=form.search_bar.data).order_by(Ticket.id.desc()).all()
-
+        all_tickets = Ticket.query.order_by(Ticket.id.desc()).all()
+        for tickett in all_tickets:
+            if form.search_bar.data in tickett.belongs_to:
+                payload.append(tickett)
+        if len(payload) < 1:
+            flash('there is no receipt or quote similar to your search', 'danger')
     view_all_forms = Ticket.query.order_by(Ticket.id.desc()).all()
-    return render_template('all_forms.html', form=form, viewer=view_all_forms, title='Records')
+
+    return render_template('all_forms.html', form=form, payload=payload, bucket=view_all_forms, title='Records')
 
 
 @app.route("/form_viewer/<int:ticket_id>", methods=['GET', 'POST'])
@@ -97,24 +74,36 @@ def form_viewer(ticket_id):
 
     form = Generator()
     if form.validate_on_submit():
+
         entered_item_name = string.capwords(form.item_name.data)
         ref_item_qtty = form.item_quantity.data
         ref_unit_price = form.unit_price.data
         ref_total_price = ref_unit_price * ref_item_qtty
         ref_total_price = round(ref_total_price, 2)
 
-        new_form_item = Storage(item_name=entered_item_name, item_quantity=ref_item_qtty,
-                                unit_price=ref_unit_price, total_price=ref_total_price, ticket_link=call_for_view.id)
+        new_load = []
+        item_list_check = Storage.query.filter_by(ticket_link=ticket_id).all()
+        for item_checked in item_list_check:
+            new_load.append(item_checked.item_name)
 
-        call_for_view.subtotal = round(
-            (call_for_view.subtotal + ref_total_price), 2)
-        call_for_view.vat = round((0.04 * call_for_view.subtotal), 2)
-        call_for_view.total_sum = round(
-            (call_for_view.subtotal + call_for_view.vat), 2)
-        call_for_view.no_items += 1
+        if entered_item_name in new_load:
+            flash('item already added to form. error?', 'info')
+        else:
+            new_form_item = Storage(item_name=entered_item_name, item_quantity=ref_item_qtty,
+                                    unit_price=ref_unit_price, total_price=ref_total_price, ticket_link=call_for_view.id)
 
-        db.session.add(new_form_item)
-        db.session.commit()
+            call_for_view.subtotal = round(
+                (call_for_view.subtotal + ref_total_price), 2)
+            call_for_view.vat = round((0.04 * call_for_view.subtotal), 2)
+            call_for_view.total_sum = round(
+                (call_for_view.subtotal + call_for_view.vat), 2)
+            call_for_view.no_items += 1
+
+            if call_for_view.status == 'new':
+                call_for_view.status = 'draft'
+
+            db.session.add(new_form_item)
+            db.session.commit()
 
     resources = Storage.query.filter_by(
         ticket_link=ticket_id).all()
@@ -164,7 +153,11 @@ def delete_item(item_id):
 @app.route("/draftify/<string:ticket_pseudo_id>", methods=['GET', 'POST'])
 def draftify(ticket_pseudo_id):
     new_query = Ticket.query.filter_by(pseudo_id=ticket_pseudo_id).first()
-    new_query.status = 'draft'
+    if new_query.no_items > 0:
+        new_query.status = 'draft'
+    else:
+        pass
+
     db.session.commit()
 
     return redirect(url_for('form_viewer', ticket_id=new_query.id))
